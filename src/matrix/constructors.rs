@@ -29,6 +29,18 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
     }
 }
 
+impl<T: Scalar + Zero, const R: usize, const C: usize> Matrix<T, R, C> {
+    pub fn zeros() -> Self {
+        Self::full(T::zero())
+    }
+}
+
+impl<T: Scalar + One, const R: usize, const C: usize> Matrix<T, R, C> {
+    pub fn ones() -> Self {
+        Self::full(T::one())
+    }
+}
+
 impl<T: Scalar + Zero + One, const N: usize> SquareMatrix<T, N> {
     pub fn identity() -> Self {
         let mut data: [[MaybeUninit<T>; N]; N] = unsafe { MaybeUninit::uninit().assume_init() };
