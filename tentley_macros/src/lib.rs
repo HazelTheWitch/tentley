@@ -80,9 +80,65 @@ impl Parse for Matrix {
     }
 }
 
+struct Vector {
+    data: Vec<Expr>
+}
+
+impl Vector {
+    fn as_row_vector(self) -> Matrix {
+        let cols = self.data.len();
+
+        Matrix { rows: vec![self.data], cols }
+    }
+
+    fn as_column_vector(self) -> Matrix {
+        Matrix { rows: self.data.into_iter().map(|e| { vec![e] }).collect(), cols: 1 }
+    }
+}
+
+impl Parse for Vector {
+    fn parse(input: ParseStream) -> Result<Self> {
+        let data = MatrixRow::parse_separated_nonempty(input)?;
+
+        Ok(Vector { data: data.into_iter().collect() })
+    }
+}
+
 #[proc_macro]
 pub fn mat(stream: TokenStream) -> TokenStream {
     let matrix = parse_macro_input!(stream as Matrix);
+
+    let rows = matrix.rows();
+    let cols = matrix.cols();
+
+    let tokens = matrix.to_tokens();
+
+    TokenStream::from(quote! { 
+        tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+     })
+}
+
+#[proc_macro]
+pub fn vector(stream: TokenStream) -> TokenStream {
+    let vector = parse_macro_input!(stream as Vector);
+
+    let matrix = vector.as_column_vector();
+
+    let rows = matrix.rows();
+    let cols = matrix.cols();
+
+    let tokens = matrix.to_tokens();
+
+    TokenStream::from(quote! { 
+        tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+     })
+}
+
+#[proc_macro]
+pub fn row_vector(stream: TokenStream) -> TokenStream {
+    let vector = parse_macro_input!(stream as Vector);
+
+    let matrix = vector.as_row_vector();
 
     let rows = matrix.rows();
     let cols = matrix.cols();

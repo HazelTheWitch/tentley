@@ -97,4 +97,13 @@ mod tests {
 
         assert_eq!(m, l * u);
     }
+
+    #[test]
+    fn vector() {
+        let col_v = vector![1, 2, 3];
+        let row_v = row_vector![1, 2, 3];
+
+        assert_eq!((3, 1), col_v.shape());
+        assert_eq!((1, 3), row_v.shape());
+    }
 }

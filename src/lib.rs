@@ -9,5 +9,5 @@ pub mod prelude {
     pub use super::matrix::{Matrix, SquareMatrix};
     pub use super::error::*;
 
-    pub use tentley_macros::mat;
+    pub use tentley_macros::{mat, vector, row_vector};
 }
