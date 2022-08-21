@@ -1,6 +1,6 @@
-use std::mem::{MaybeUninit, transmute_copy};
+use std::mem::{transmute_copy, MaybeUninit};
 
-use crate::scalar::{Scalar, Zero, One};
+use crate::scalar::{One, Scalar, Zero};
 
 use super::{Matrix, SquareMatrix};
 

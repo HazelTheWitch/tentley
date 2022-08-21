@@ -1,6 +1,6 @@
-use std::ops::{Mul, Add};
+use std::ops::{Add, Mul};
 
-use crate::{scalar::Scalar, prelude::TentleyError};
+use crate::{prelude::TentleyError, scalar::Scalar};
 
 use super::{AugmentedMatrix, Matrix};
 
@@ -14,7 +14,13 @@ impl<T: Scalar, const R: usize, const C0: usize, const C1: usize> AugmentedMatri
     }
 }
 
-impl<T: Scalar + Add<Output = T> + Mul<Output = T>, const R: usize, const C0: usize, const C1: usize> AugmentedMatrix<T, R, C0, C1> {
+impl<
+        T: Scalar + Add<Output = T> + Mul<Output = T>,
+        const R: usize,
+        const C0: usize,
+        const C1: usize,
+    > AugmentedMatrix<T, R, C0, C1>
+{
     pub fn swap_rows(&mut self, row_0: usize, row_1: usize) -> Result<(), TentleyError> {
         self.left.swap_rows(row_0, row_1)?;
         self.right.swap_rows(row_0, row_1)?;
@@ -22,7 +28,12 @@ impl<T: Scalar + Add<Output = T> + Mul<Output = T>, const R: usize, const C0: us
         Ok(())
     }
 
-    pub fn add_rows(&mut self, source: usize, target: usize, coefficient: T) -> Result<(), TentleyError> {
+    pub fn add_rows(
+        &mut self,
+        source: usize,
+        target: usize,
+        coefficient: T,
+    ) -> Result<(), TentleyError> {
         self.left.add_rows(source, target, coefficient)?;
         self.right.add_rows(source, target, coefficient)?;
 

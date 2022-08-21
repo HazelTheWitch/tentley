@@ -1,8 +1,15 @@
-use std::ops::{Mul, Add, Div, Neg};
+use std::ops::{Add, Div, Mul, Neg};
 
-use crate::{scalar::{Scalar, One, Zero}, prelude::{SquareMatrix, TentleyError}};
+use crate::{
+    prelude::{SquareMatrix, TentleyError},
+    scalar::{One, Scalar, Zero},
+};
 
-impl<T: Scalar + Mul<Output = T> + Add<Output = T> + Div<Output = T> + Neg<Output = T> + One + Zero, const N: usize> SquareMatrix<T, N> {
+impl<
+        T: Scalar + Mul<Output = T> + Add<Output = T> + Div<Output = T> + Neg<Output = T> + One + Zero,
+        const N: usize,
+    > SquareMatrix<T, N>
+{
     pub fn lu_decomposition(&self) -> Result<(Self, Self), TentleyError> {
         let (mut l, mut u) = (Self::identity(), self.clone());
 
@@ -13,7 +20,7 @@ impl<T: Scalar + Mul<Output = T> + Add<Output = T> + Div<Output = T> + Neg<Outpu
                 return Err(TentleyError::DivisionByZero);
             }
 
-            for j in i+1..N {
+            for j in i + 1..N {
                 let factor = unsafe { *u.get_unchecked(j, i) } / denominator;
 
                 unsafe {

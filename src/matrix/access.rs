@@ -32,7 +32,12 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
             return None;
         }
 
-        Some(self.data.iter().map(|row| unsafe { row.get_unchecked(col) }).collect())
+        Some(
+            self.data
+                .iter()
+                .map(|row| unsafe { row.get_unchecked(col) })
+                .collect(),
+        )
     }
 
     pub fn get_col_mut(&mut self, col: usize) -> Option<Vec<&mut T>> {
@@ -40,22 +45,30 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
             return None;
         }
 
-        Some(self.data.iter_mut().map(|row| unsafe { row.get_unchecked_mut(col) }).collect())
+        Some(
+            self.data
+                .iter_mut()
+                .map(|row| unsafe { row.get_unchecked_mut(col) })
+                .collect(),
+        )
     }
 
     pub unsafe fn get_row_unchecked(&self, row: usize) -> Vec<&T> {
         self.data.get_unchecked(row).into_iter().collect()
     }
 
-    pub unsafe  fn get_row_unchecked_mut(&mut self, row: usize) -> Vec<&mut T> {
+    pub unsafe fn get_row_unchecked_mut(&mut self, row: usize) -> Vec<&mut T> {
         self.data.get_unchecked_mut(row).into_iter().collect()
     }
 
-    pub unsafe  fn get_col_unchecked(&self, col: usize) -> Vec<&T> {
+    pub unsafe fn get_col_unchecked(&self, col: usize) -> Vec<&T> {
         self.data.iter().map(|row| row.get_unchecked(col)).collect()
     }
 
     pub unsafe fn get_col_unchecked_mut(&mut self, col: usize) -> Vec<&mut T> {
-        self.data.iter_mut().map(|row| row.get_unchecked_mut(col)).collect()
+        self.data
+            .iter_mut()
+            .map(|row| row.get_unchecked_mut(col))
+            .collect()
     }
 }

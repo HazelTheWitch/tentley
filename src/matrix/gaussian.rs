@@ -1,10 +1,15 @@
 use std::ops::{Add, Mul};
 
-use crate::{scalar::Scalar, prelude::{TentleyError, Axis}};
+use crate::{
+    prelude::{Axis, TentleyError},
+    scalar::Scalar,
+};
 
 use super::Matrix;
 
-impl<T: Scalar + Add<Output = T> + Mul<Output = T>, const R: usize, const C: usize> Matrix<T, R, C> {
+impl<T: Scalar + Add<Output = T> + Mul<Output = T>, const R: usize, const C: usize>
+    Matrix<T, R, C>
+{
     pub fn swap_rows(&mut self, row_0: usize, row_1: usize) -> Result<(), TentleyError> {
         if row_0 >= R || row_1 >= R {
             return Err(TentleyError::IndexOutOfBounds { axis: Axis::Row });
@@ -15,7 +20,12 @@ impl<T: Scalar + Add<Output = T> + Mul<Output = T>, const R: usize, const C: usi
         Ok(())
     }
 
-    pub fn add_rows(&mut self, source: usize, target: usize, coefficient: T) -> Result<(), TentleyError> {
+    pub fn add_rows(
+        &mut self,
+        source: usize,
+        target: usize,
+        coefficient: T,
+    ) -> Result<(), TentleyError> {
         if source >= R || target >= R {
             return Err(TentleyError::IndexOutOfBounds { axis: Axis::Row });
         }

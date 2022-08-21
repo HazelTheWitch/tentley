@@ -79,11 +79,14 @@ mod tests {
     fn identity() {
         let i = SquareMatrix::<f32, 3>::identity();
 
-        assert_eq!(mat![
-            1.0, 0.0, 0.0;
-            0.0, 1.0, 0.0;
-            0.0, 0.0, 1.0
-        ], i);
+        assert_eq!(
+            mat![
+                1.0, 0.0, 0.0;
+                0.0, 1.0, 0.0;
+                0.0, 0.0, 1.0
+            ],
+            i
+        );
     }
 
     #[test]

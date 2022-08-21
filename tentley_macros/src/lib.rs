@@ -7,11 +7,16 @@ use proc_macro2::{Group, Punct};
 
 use quote::quote;
 
-use syn::{parse_macro_input, Result, Expr, Token, parse::{Parse, ParseStream, Error}, punctuated::Punctuated};
+use syn::{
+    parse::{Error, Parse, ParseStream},
+    parse_macro_input,
+    punctuated::Punctuated,
+    Expr, Result, Token,
+};
 
 struct Matrix {
     rows: Vec<Vec<Expr>>,
-    cols: usize
+    cols: usize,
 }
 
 impl Matrix {
@@ -58,7 +63,7 @@ impl Parse for Matrix {
 
                     let error_message = format!(
                         "Unexpected number of elements in row: {}. Expected {}. Found {}",
-                        row_index, 
+                        row_index,
                         cols,
                         row.len()
                     );
@@ -76,23 +81,32 @@ impl Parse for Matrix {
             }
         }
 
-        Ok(Matrix { rows, cols: cols.unwrap_or(0) })
+        Ok(Matrix {
+            rows,
+            cols: cols.unwrap_or(0),
+        })
     }
 }
 
 struct Vector {
-    data: Vec<Expr>
+    data: Vec<Expr>,
 }
 
 impl Vector {
     fn as_row_vector(self) -> Matrix {
         let cols = self.data.len();
 
-        Matrix { rows: vec![self.data], cols }
+        Matrix {
+            rows: vec![self.data],
+            cols,
+        }
     }
 
     fn as_column_vector(self) -> Matrix {
-        Matrix { rows: self.data.into_iter().map(|e| { vec![e] }).collect(), cols: 1 }
+        Matrix {
+            rows: self.data.into_iter().map(|e| vec![e]).collect(),
+            cols: 1,
+        }
     }
 }
 
@@ -100,7 +114,9 @@ impl Parse for Vector {
     fn parse(input: ParseStream) -> Result<Self> {
         let data = MatrixRow::parse_separated_nonempty(input)?;
 
-        Ok(Vector { data: data.into_iter().collect() })
+        Ok(Vector {
+            data: data.into_iter().collect(),
+        })
     }
 }
 
@@ -113,9 +129,9 @@ pub fn mat(stream: TokenStream) -> TokenStream {
 
     let tokens = matrix.to_tokens();
 
-    TokenStream::from(quote! { 
-        tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
-     })
+    TokenStream::from(quote! {
+       tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+    })
 }
 
 #[proc_macro]
@@ -129,9 +145,9 @@ pub fn vector(stream: TokenStream) -> TokenStream {
 
     let tokens = matrix.to_tokens();
 
-    TokenStream::from(quote! { 
-        tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
-     })
+    TokenStream::from(quote! {
+       tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+    })
 }
 
 #[proc_macro]
@@ -145,7 +161,7 @@ pub fn row_vector(stream: TokenStream) -> TokenStream {
 
     let tokens = matrix.to_tokens();
 
-    TokenStream::from(quote! { 
-        tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
-     })
+    TokenStream::from(quote! {
+       tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+    })
 }

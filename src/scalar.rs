@@ -15,13 +15,21 @@ pub trait One {
 macro_rules! impl_numeric {
     ($t: ty, $zero: expr, $one: expr) => {
         impl Zero for $t {
-            fn zero() -> Self { $zero }
-            fn is_zero(&self) -> bool { self == &($zero)}
+            fn zero() -> Self {
+                $zero
+            }
+            fn is_zero(&self) -> bool {
+                self == &($zero)
+            }
         }
 
         impl One for $t {
-            fn one() -> Self { $one }
-            fn is_one(&self) -> bool { self == &($one)}
+            fn one() -> Self {
+                $one
+            }
+            fn is_one(&self) -> bool {
+                self == &($one)
+            }
         }
     };
 }

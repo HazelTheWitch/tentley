@@ -1,33 +1,49 @@
-use std::{ops::{Mul, Add, Div, Neg}, hint::unreachable_unchecked};
+use std::{
+    hint::unreachable_unchecked,
+    ops::{Add, Div, Mul, Neg},
+};
 
-use crate::{scalar::{Scalar, One, Zero}, prelude::TentleyError};
+use crate::{
+    prelude::TentleyError,
+    scalar::{One, Scalar, Zero},
+};
 
 use super::SquareMatrix;
 
 impl<T: Scalar, const N: usize> SquareMatrix<T, N> {
     pub fn diagonal(&self) -> Vec<&T> {
-        self.data.iter()
+        self.data
+            .iter()
             .enumerate()
-            .map(|(i, row)| { unsafe { row.get_unchecked(i) } })
+            .map(|(i, row)| unsafe { row.get_unchecked(i) })
             .collect()
     }
 
     pub fn diagonal_mut(&mut self) -> Vec<&mut T> {
-        self.data.iter_mut()
+        self.data
+            .iter_mut()
             .enumerate()
-            .map(|(i, row)| { unsafe { row.get_unchecked_mut(i) } })
+            .map(|(i, row)| unsafe { row.get_unchecked_mut(i) })
             .collect()
     }
 
     pub fn into_diagonal(self) -> Vec<T> {
-        self.data.into_iter()
+        self.data
+            .into_iter()
             .enumerate()
-            .map(|(i, row)| { match row.into_iter().nth(i) { Some(value) => value, None => unsafe { unreachable_unchecked() } } })
+            .map(|(i, row)| match row.into_iter().nth(i) {
+                Some(value) => value,
+                None => unsafe { unreachable_unchecked() },
+            })
             .collect()
     }
 }
 
-impl<T: Scalar + Mul<Output = T> + Add<Output = T> + Div<Output = T> + Neg<Output = T> + One + Zero, const N: usize> SquareMatrix<T, N> {
+impl<
+        T: Scalar + Mul<Output = T> + Add<Output = T> + Div<Output = T> + Neg<Output = T> + One + Zero,
+        const N: usize,
+    > SquareMatrix<T, N>
+{
     pub fn determinant(&self) -> Result<T, TentleyError> {
         let (l, u) = self.lu_decomposition()?;
 

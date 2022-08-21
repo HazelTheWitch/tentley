@@ -1,13 +1,13 @@
 // #![feature(generic_const_exprs)]
 
-pub mod linalg;
 pub mod error;
-pub mod scalar;
+pub mod linalg;
 pub mod matrix;
+pub mod scalar;
 
 pub mod prelude {
-    pub use super::matrix::{Matrix, SquareMatrix};
     pub use super::error::*;
+    pub use super::matrix::{Matrix, SquareMatrix};
 
-    pub use tentley_macros::{mat, vector, row_vector};
+    pub use tentley_macros::{mat, row_vector, vector};
 }
