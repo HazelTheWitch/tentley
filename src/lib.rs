@@ -7,7 +7,7 @@ pub mod scalar;
 
 pub mod prelude {
     pub use super::error::*;
-    pub use super::matrix::{Matrix, SquareMatrix};
+    pub use super::matrix::{Matrix, SquareMatrix, AugmentedMatrix};
 
     pub use tentley_macros::{mat, row_vector, vector};
 }
