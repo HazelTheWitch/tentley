@@ -1,4 +1,4 @@
-use std::{ops::{Add, Mul}, iter::zip};
+use std::ops::{Add, Mul};
 
 use crate::{scalar::Scalar, prelude::{TentleyError, Axis}};
 
