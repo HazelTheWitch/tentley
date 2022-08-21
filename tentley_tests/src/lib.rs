@@ -116,4 +116,28 @@ mod tests {
 
         assert_eq!(-2, m.determinant().unwrap());
     }
+
+    #[test]
+    fn map() {
+        let m = mat![
+            1, 2;
+            3, 4
+        ];
+
+        let m2 = m.map(|x| x * x);
+
+        assert_eq!(mat![1, 4; 9, 16], m2);
+    }
+
+    #[test]
+    fn filter() {
+        let m = mat![
+            1, 2;
+            3, 4
+        ];
+
+        let filtered = m.filter(|e| e % 2 == 0);
+
+        assert_eq!(mat![None, Some(2); None, Some(4)], filtered);
+    }
 }
