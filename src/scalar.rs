@@ -1,6 +1,6 @@
 pub trait Scalar: Copy + Sized {}
 
-impl<T: Copy> Scalar for T {}
+impl<T: Copy + Sized> Scalar for T {}
 
 pub trait Zero {
     fn zero() -> Self;
