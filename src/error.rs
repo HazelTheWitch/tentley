@@ -6,7 +6,6 @@ pub enum Axis {
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TentleyError {
-    UninitializedError { exptected: usize, actual: usize },
     IndexOutOfBounds { axis: Axis },
     DivisionByZero,
 }
