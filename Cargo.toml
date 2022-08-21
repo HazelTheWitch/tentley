@@ -7,3 +7,9 @@ edition = "2021"
 
 [dependencies]
 tentley_macros = { path = "tentley_macros" }
+fastrand = { version = "1.8.0", optional = true }
+
+[features]
+full = ["random"]
+default = []
+random = ["dep:fastrand"]

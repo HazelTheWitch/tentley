@@ -1,3 +1,5 @@
+#[cfg(feature = "random")]
+mod random;
 mod square;
 mod augmented;
 mod gaussian;

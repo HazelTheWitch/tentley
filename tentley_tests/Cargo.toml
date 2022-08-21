@@ -5,4 +5,4 @@ edition = "2021"
 publish = false
 
 [dependencies]
-tentley = { path = ".." }
+tentley = { path = "..", features = ["full"] }

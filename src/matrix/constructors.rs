@@ -15,6 +15,18 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
     pub fn full(value: T) -> Self {
         Self::new([[value; C]; R])
     }
+
+    pub fn from_fn<F: Fn(usize, usize) -> T>(f: F) -> Self {
+        let mut data: [[MaybeUninit<T>; C]; R] = unsafe { MaybeUninit::uninit().assume_init() };
+
+        for i in 0..R {
+            for j in 0..C {
+                data[i][j] = MaybeUninit::new(f(i, j));
+            }
+        }
+
+        Matrix::new(unsafe { transmute_copy(&data) })
+    }
 }
 
 impl<T: Scalar + Zero + One, const N: usize> SquareMatrix<T, N> {
