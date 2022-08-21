@@ -21,7 +21,7 @@ impl<T: Scalar + Mul<Output = T> + Sum, const R: usize, const N: usize, const C:
                 data[i][j] = MaybeUninit::new(
                     unsafe { zip(self.get_row_unchecked(i), rhs.get_col_unchecked(j)) }
                         .map(|(a, b)| *a * *b)
-                        .sum()
+                        .sum(),
                 )
             }
         }

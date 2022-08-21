@@ -49,7 +49,11 @@ impl<
 
         let mut determinant = T::one();
 
-        for element in l.into_diagonal().into_iter().chain(u.into_diagonal().into_iter()) {
+        for element in l
+            .into_diagonal()
+            .into_iter()
+            .chain(u.into_diagonal().into_iter())
+        {
             determinant = determinant * element;
         }
 

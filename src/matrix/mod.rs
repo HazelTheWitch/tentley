@@ -3,6 +3,7 @@ mod augmented;
 mod basic;
 mod constructors;
 mod gaussian;
+mod iter;
 mod ops;
 #[cfg(feature = "random")]
 mod random;
