@@ -11,12 +11,13 @@ use syn::{
     parse::{Error, Parse, ParseStream},
     parse_macro_input,
     punctuated::Punctuated,
-    Expr, Result, Token,
+    Expr, Result, Token, Type,
 };
 
 struct Matrix {
     rows: Vec<Vec<Expr>>,
     cols: usize,
+    ty: Option<Type>,
 }
 
 impl Matrix {
@@ -34,9 +35,15 @@ impl Matrix {
         for row in self.rows.iter() {
             let mut row_tokens = proc_macro2::TokenStream::new();
 
-            let row_iter = row.iter();
-
-            row_tokens.append_separated(row_iter, Punct::new(',', Spacing::Alone));
+            if let Some(ty) = &self.ty {
+                row_tokens.append_separated(
+                    row.into_iter()
+                        .map(|element| proc_macro2::TokenStream::from(quote! { #element as #ty })),
+                    Punct::new(',', Spacing::Alone)
+                );
+            } else {
+                row_tokens.append_separated(row.into_iter(), Punct::new(',', Spacing::Alone));
+            }
 
             tokens.append(Group::new(Delimiter::Bracket, row_tokens));
             tokens.append(Punct::new(',', Spacing::Alone));
@@ -53,43 +60,60 @@ impl Parse for Matrix {
         let mut rows = Vec::new();
         let mut cols = None;
 
+        let mut ty = None;
+        let mut needs_ty = true;
+
         while !input.is_empty() {
             let span = input.span();
-            let row = MatrixRow::parse_separated_nonempty(input)?;
+            if !needs_ty {
+                let row = MatrixRow::parse_separated_nonempty(input)?;
 
-            if let Some(cols) = cols {
-                if row.len() != cols {
-                    let row_index = rows.len();
+                if let Some(cols) = cols {
+                    if row.len() != cols {
+                        let row_index = rows.len();
 
-                    let error_message = format!(
-                        "Unexpected number of elements in row: {}. Expected {}. Found {}",
-                        row_index,
-                        cols,
-                        row.len()
-                    );
+                        let error_message = format!(
+                            "Unexpected number of elements in row: {}. Expected {}. Found {}",
+                            row_index,
+                            cols,
+                            row.len()
+                        );
 
-                    return Err(Error::new(span, error_message));
+                        return Err(Error::new(span, error_message));
+                    }
+                } else {
+                    cols = Some(row.len());
+                }
+
+                rows.push(row.into_iter().collect());
+
+                if !input.is_empty() {
+                    input.parse::<Token![;]>()?;
                 }
             } else {
-                cols = Some(row.len());
-            }
+                let parsed_ty = input.parse::<Type>();
 
-            rows.push(row.into_iter().collect());
+                if let Ok(parsed_ty) = parsed_ty {
+                    input.parse::<Token![;]>()?;
 
-            if !input.is_empty() {
-                input.parse::<Token![;]>()?;
+                    ty = Some(parsed_ty);
+                }
+
+                needs_ty = false;
             }
         }
 
         Ok(Matrix {
             rows,
             cols: cols.unwrap_or(0),
+            ty,
         })
     }
 }
 
 struct Vector {
     data: Vec<Expr>,
+    ty: Option<Type>,
 }
 
 impl Vector {
@@ -99,6 +123,7 @@ impl Vector {
         Matrix {
             rows: vec![self.data],
             cols,
+            ty: self.ty,
         }
     }
 
@@ -106,16 +131,27 @@ impl Vector {
         Matrix {
             rows: self.data.into_iter().map(|e| vec![e]).collect(),
             cols: 1,
+            ty: self.ty,
         }
     }
 }
 
 impl Parse for Vector {
     fn parse(input: ParseStream) -> Result<Self> {
+        let mut ty = None;
+        let parsed_ty = input.parse::<Type>();
+
+        if let Ok(parsed_ty) = parsed_ty {
+            input.parse::<Token![;]>()?;
+
+            ty = Some(parsed_ty);
+        }
+        
         let data = MatrixRow::parse_separated_nonempty(input)?;
 
         Ok(Vector {
             data: data.into_iter().collect(),
+            ty,
         })
     }
 }
