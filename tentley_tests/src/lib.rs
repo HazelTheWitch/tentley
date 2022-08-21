@@ -74,4 +74,27 @@ mod tests {
 
         assert_eq!(zeros, m0 + m1);
     }
+
+    #[test]
+    fn identity() {
+        let i = SquareMatrix::<f32, 3>::identity();
+
+        assert_eq!(mat![
+            1.0, 0.0, 0.0;
+            0.0, 1.0, 0.0;
+            0.0, 0.0, 1.0
+        ], i);
+    }
+
+    #[test]
+    fn lu_decomposition() {
+        let m = mat![
+            1.0, 2.0;
+            5.0, 3.0
+        ];
+
+        let (l, u) = m.lu_decomposition().unwrap();
+
+        assert_eq!(m, l * u);
+    }
 }

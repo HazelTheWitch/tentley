@@ -1,3 +1,4 @@
+mod gaussian;
 mod ops;
 mod basic;
 mod constructors;
