@@ -106,4 +106,14 @@ mod tests {
         assert_eq!((3, 1), col_v.shape());
         assert_eq!((1, 3), row_v.shape());
     }
+
+    #[test]
+    fn determinant() {
+        let m = mat![
+            1, 2;
+            3, 4
+        ];
+
+        assert_eq!(-2, m.determinant().unwrap());
+    }
 }

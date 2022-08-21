@@ -9,6 +9,10 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
         (R, C)
     }
 
+    pub const fn is_square(&self) -> bool {
+        R == C
+    }
+
     pub fn transpose(&self) -> Matrix<T, C, R> {
         let mut data: [[MaybeUninit<T>; R]; C] = unsafe { MaybeUninit::uninit().assume_init() };
 
@@ -18,7 +22,6 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
             }
         }
 
-        // TODO: Work out better way of doing this without a copy. Currently a supposed compiler bug does not allow for transmute to be used.
         Matrix::new(unsafe { transmute_copy(&data) })
     }
 }
