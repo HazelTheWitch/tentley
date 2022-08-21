@@ -1,3 +1,5 @@
+#![feature(generic_const_exprs)]
+
 pub mod error;
 pub mod scalar;
 pub mod matrix;

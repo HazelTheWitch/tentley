@@ -54,4 +54,24 @@ mod tests {
 
         assert_eq!(p, m0 * m1);
     }
+
+    #[test]
+    fn addition() {
+        let m0 = mat![
+            1, 2;
+            3, 4
+        ];
+
+        let m1 = mat![
+            -1, -2;
+            -3, -4
+        ];
+
+        let zeros = mat![
+            0, 0;
+            0, 0
+        ];
+
+        assert_eq!(zeros, m0 + m1);
+    }
 }

@@ -1,4 +1,4 @@
-use std::{ops::Mul, mem::{transmute_copy, MaybeUninit}, iter::{zip, Sum}};
+use std::{ops::{Mul, Add}, mem::{transmute_copy, MaybeUninit}, iter::{zip, Sum}};
 
 use crate::scalar::Scalar;
 
@@ -17,6 +17,22 @@ impl<T: Scalar + Mul<Output = T> + Sum, const R: usize, const N: usize, const C:
                         .map(|(a, b)| *a * *b)
                         .sum()
                 )
+            }
+        }
+
+        Matrix::new(unsafe { transmute_copy(&data) })
+    }
+}
+
+impl<T: Scalar + Add<Output = T>, const R: usize, const C: usize> Add for Matrix<T, R, C> {
+    type Output = Matrix<T, R, C>;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        let mut data: [[MaybeUninit<T>; R]; C] = unsafe { MaybeUninit::uninit().assume_init() };
+
+        for row in 0..R {
+            for (col, (a, b)) in unsafe { zip(self.get_row_unchecked(row), rhs.get_row_unchecked(row)) }.enumerate() {
+                data[col][row] = MaybeUninit::new(*a + *b);
             }
         }
 
