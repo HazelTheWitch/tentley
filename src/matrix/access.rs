@@ -20,11 +20,11 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
     }
 
     pub fn get_row(&self, row: usize) -> Option<Vec<&T>> {
-        Some(self.data.get(row)?.into_iter().collect())
+        Some(self.data.get(row)?.iter().collect())
     }
 
     pub fn get_row_mut(&mut self, row: usize) -> Option<Vec<&mut T>> {
-        Some(self.data.get_mut(row)?.into_iter().collect())
+        Some(self.data.get_mut(row)?.iter_mut().collect())
     }
 
     pub fn get_col(&self, col: usize) -> Option<Vec<&T>> {
@@ -54,11 +54,11 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
     }
 
     pub unsafe fn get_row_unchecked(&self, row: usize) -> Vec<&T> {
-        self.data.get_unchecked(row).into_iter().collect()
+        self.data.get_unchecked(row).iter().collect()
     }
 
     pub unsafe fn get_row_unchecked_mut(&mut self, row: usize) -> Vec<&mut T> {
-        self.data.get_unchecked_mut(row).into_iter().collect()
+        self.data.get_unchecked_mut(row).iter_mut().collect()
     }
 
     pub unsafe fn get_col_unchecked(&self, col: usize) -> Vec<&T> {

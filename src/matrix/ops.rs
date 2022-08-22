@@ -16,10 +16,10 @@ impl<T: Scalar + Mul<Output = T> + Sum, const R: usize, const N: usize, const C:
     fn mul(self, rhs: Matrix<T, N, C>) -> Self::Output {
         let mut data: [[MaybeUninit<T>; C]; R] = unsafe { MaybeUninit::uninit().assume_init() };
 
-        for i in 0..R {
-            for j in 0..C {
-                data[i][j] = MaybeUninit::new(
-                    unsafe { zip(self.get_row_unchecked(i), rhs.get_col_unchecked(j)) }
+        for (row, data) in data.iter_mut().enumerate() {
+            for (col, element) in data.iter_mut().enumerate() {
+                *element = MaybeUninit::new(
+                    unsafe { zip(self.get_row_unchecked(row), rhs.get_col_unchecked(col)) }
                         .map(|(a, b)| *a * *b)
                         .sum(),
                 )

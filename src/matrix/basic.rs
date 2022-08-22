@@ -19,9 +19,9 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
     pub fn transpose(&self) -> Matrix<T, C, R> {
         let mut data: [[MaybeUninit<T>; R]; C] = unsafe { MaybeUninit::uninit().assume_init() };
 
-        for row in 0..R {
-            for col in 0..C {
-                data[col][row] = MaybeUninit::new(unsafe { *self.get_unchecked(row, col) });
+        for (row, data) in data.iter_mut().enumerate() {
+            for (col, element) in data.iter_mut().enumerate() {
+                *element = MaybeUninit::new(unsafe { *self.get_unchecked(row, col) });
             }
         }
 

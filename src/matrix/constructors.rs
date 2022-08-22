@@ -19,9 +19,9 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
     pub fn from_fn<F: Fn(usize, usize) -> T>(f: F) -> Self {
         let mut data: [[MaybeUninit<T>; C]; R] = unsafe { MaybeUninit::uninit().assume_init() };
 
-        for i in 0..R {
-            for j in 0..C {
-                data[i][j] = MaybeUninit::new(f(i, j));
+        for (row, data) in data.iter_mut().enumerate() {
+            for (col, element) in data.iter_mut().enumerate() {
+                *element = MaybeUninit::new(f(row, col));
             }
         }
 
@@ -45,9 +45,9 @@ impl<T: Scalar + Zero + One, const N: usize> SquareMatrix<T, N> {
     pub fn identity() -> Self {
         let mut data: [[MaybeUninit<T>; N]; N] = unsafe { MaybeUninit::uninit().assume_init() };
 
-        for i in 0..N {
-            for j in 0..N {
-                data[i][j] = MaybeUninit::new(if i == j { T::one() } else { T::zero() });
+        for (row, data) in data.iter_mut().enumerate() {
+            for (col, element) in data.iter_mut().enumerate() {
+                *element = MaybeUninit::new(if row == col { T::one() } else { T::zero() });
             }
         }
 

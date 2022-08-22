@@ -11,7 +11,7 @@ impl<
     > SquareMatrix<T, N>
 {
     pub fn lu_decomposition(&self) -> Result<(Self, Self), TentleyError> {
-        let (mut l, mut u) = (Self::identity(), self.clone());
+        let (mut l, mut u) = (Self::identity(), *self);
 
         for i in 0..N {
             let denominator = unsafe { *u.get_unchecked(i, i) };

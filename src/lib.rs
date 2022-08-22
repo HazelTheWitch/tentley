@@ -1,4 +1,4 @@
-// #![feature(generic_const_exprs)]
+#![feature(type_alias_impl_trait)]
 
 pub mod error;
 pub mod linalg;
