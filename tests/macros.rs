@@ -20,13 +20,13 @@ fn vector_macro() {
 
 #[test]
 fn typed_macros() {
-    let m = mat![f32;
+    let m = mat![f64;
         1, 2, 3;
         4, 5, 6;
         7, 8, 9
     ];
 
-    let v = vector![f32; 1, 0.5, 0.25];
+    let v = vector![f64; 1, 0.5, 0.25];
 
     assert_eq!(vector![1.0, 0.5, 0.25], v);
     assert_eq!(mat![
