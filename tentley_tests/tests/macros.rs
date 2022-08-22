@@ -26,7 +26,7 @@ fn typed_macros() {
         7, 8, 9
     ];
 
-    let v = vector![f32; 1.0, 0.5, 0.25];
+    let v = vector![f32; 1, 0.5, 0.25];
 
     assert_eq!(vector![1.0, 0.5, 0.25], v);
     assert_eq!(mat![
