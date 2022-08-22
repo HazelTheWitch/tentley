@@ -11,13 +11,16 @@ mod square;
 
 use crate::scalar::Scalar;
 
+/// Any square matrix of size NxN.
 pub type SquareMatrix<T, const N: usize> = Matrix<T, N, N>;
 
+/// Represents a matrix of size RxC.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Matrix<T: Scalar, const R: usize, const C: usize> {
     data: [[T; C]; R],
 }
 
+/// Represents an augmented matrix with left and right matrices, any row operations are performed on both.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct AugmentedMatrix<T: Scalar, const R: usize, const C0: usize, const C1: usize> {
     left: Matrix<T, R, C0>,

@@ -11,6 +11,7 @@ use crate::{
 use super::SquareMatrix;
 
 impl<T: Scalar, const N: usize> SquareMatrix<T, N> {
+    /// Returns the diagonal vector of references for this [`SquareMatrix<T, N>`].
     pub fn diagonal(&self) -> Vec<&T> {
         self.data
             .iter()
@@ -19,6 +20,7 @@ impl<T: Scalar, const N: usize> SquareMatrix<T, N> {
             .collect()
     }
 
+    /// Returns the diagonal vector of mutable references for this [`SquareMatrix<T, N>`].
     pub fn diagonal_mut(&mut self) -> Vec<&mut T> {
         self.data
             .iter_mut()
@@ -27,6 +29,7 @@ impl<T: Scalar, const N: usize> SquareMatrix<T, N> {
             .collect()
     }
 
+    /// Consumes this [`SquareMatrix<T, N>`] and returns a vector of its diagonal.
     pub fn into_diagonal(self) -> Vec<T> {
         self.data
             .into_iter()
@@ -44,6 +47,11 @@ impl<
         const N: usize,
     > SquareMatrix<T, N>
 {
+    /// Returns the determinant of this [`SquareMatrix<T, N>`].
+    ///
+    /// # Errors
+    ///
+    /// - [`TentleyError::DivisionByZero`] if the matrix is singular
     pub fn determinant(&self) -> Result<T, TentleyError> {
         let (l, u) = self.lu_decomposition()?;
 

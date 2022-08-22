@@ -35,10 +35,10 @@ impl Matrix {
         for row in self.rows.iter() {
             let mut row_tokens = proc_macro2::TokenStream::new();
 
-            if let Some(_) = &self.ty {
+            if let Some(ty) = &self.ty {
                 row_tokens.append_separated(
                     row.into_iter()
-                        .map(|element| proc_macro2::TokenStream::from(quote! { (#element).into() })),
+                        .map(|element| proc_macro2::TokenStream::from(quote! { #element as #ty })),
                     Punct::new(',', Spacing::Alone)
                 );
             } else {

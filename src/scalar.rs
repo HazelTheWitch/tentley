@@ -1,14 +1,21 @@
-pub trait Scalar: Copy + Sized {}
+/// A trait for any type which can be stored in a Matrix, blanket implementation provided for any types which have the properties required.
+pub trait Scalar: Copy {}
 
-impl<T: Copy + Sized> Scalar for T {}
+impl<T: Copy> Scalar for T {}
 
+/// A trait for any type which has an additive identity.
 pub trait Zero {
+    /// Returns the additive identity.
     fn zero() -> Self;
+    /// Returns true if the value is zero.
     fn is_zero(&self) -> bool;
 }
 
+/// A trait for any type which has an multiplicative identity.
 pub trait One {
+    /// Returns the multiplicative identity.
     fn one() -> Self;
+    /// Returns true if the value is one.
     fn is_one(&self) -> bool;
 }
 

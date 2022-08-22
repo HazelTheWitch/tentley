@@ -10,6 +10,14 @@ impl<
         const N: usize,
     > SquareMatrix<T, N>
 {
+
+    /// Returns the lu decomposition of this [`SquareMatrix<T, N>`].
+    /// 
+    /// Finds two matrices, l and u in the form self = lu. Where l is a lower triangular matrix and u is an upper triangular matrix.
+    ///
+    /// # Errors
+    ///
+    /// - [`TentleyError::DivisionByZero`] if the matrix is singular
     pub fn lu_decomposition(&self) -> Result<(Self, Self), TentleyError> {
         let (mut l, mut u) = (Self::identity(), *self);
 
