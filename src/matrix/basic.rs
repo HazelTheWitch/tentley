@@ -21,7 +21,7 @@ impl<T: Scalar, const R: usize, const C: usize> Matrix<T, R, C> {
 
         for (row, data) in data.iter_mut().enumerate() {
             for (col, element) in data.iter_mut().enumerate() {
-                *element = MaybeUninit::new(unsafe { *self.get_unchecked(row, col) });
+                *element = MaybeUninit::new(unsafe { *self.get_unchecked(col, row) });
             }
         }
 
