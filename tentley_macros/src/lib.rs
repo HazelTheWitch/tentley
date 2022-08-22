@@ -38,7 +38,7 @@ impl Matrix {
             if let Some(ty) = &self.ty {
                 row_tokens.append_separated(
                     row.into_iter()
-                        .map(|element| proc_macro2::TokenStream::from(quote! { #element as #ty })),
+                        .map(|element| proc_macro2::TokenStream::from(quote! { #element.into() })),
                     Punct::new(',', Spacing::Alone)
                 );
             } else {
@@ -162,11 +162,15 @@ pub fn mat(stream: TokenStream) -> TokenStream {
 
     let rows = matrix.rows();
     let cols = matrix.cols();
+    let ty = match &matrix.ty {
+        Some(ty) => quote! { #ty },
+        None => quote! { _ }
+    };
 
     let tokens = matrix.to_tokens();
 
     TokenStream::from(quote! {
-       tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+       tentley::prelude::Matrix::<#ty, #rows, #cols>::new(#tokens)
     })
 }
 
@@ -178,11 +182,15 @@ pub fn vector(stream: TokenStream) -> TokenStream {
 
     let rows = matrix.rows();
     let cols = matrix.cols();
+    let ty = match &matrix.ty {
+        Some(ty) => quote! { #ty },
+        None => quote! { _ }
+    };
 
     let tokens = matrix.to_tokens();
 
     TokenStream::from(quote! {
-       tentley::prelude::Matrix::<_, #rows, #cols>::new(#tokens)
+       tentley::prelude::Matrix::<#ty, #rows, #cols>::new(#tokens)
     })
 }
 
