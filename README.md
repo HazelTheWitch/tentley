@@ -20,7 +20,7 @@ To create a matrix simply use the `mat![]` command.
 ```rust
 use tentley::prelude::*;
 
-let a = mat![f32;  // Ensures the type is f32, uses 'as' behind the scenes
+let a = mat![f64;  // Ensures the type is f64, uses into behind the scenes
     -1, 3.0 / 2.0;
      1,  -1
 ];
