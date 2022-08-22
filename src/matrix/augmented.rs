@@ -1,6 +1,6 @@
 use std::ops::{Add, Mul};
 
-use crate::{prelude::TentleyError, scalar::Scalar};
+use crate::{prelude::TentleyError, scalar_traits::Scalar};
 
 use super::{AugmentedMatrix, Matrix};
 

@@ -1,8 +1,10 @@
 use std::ops::{Add, Div, Mul, Neg};
 
+use num_traits::{One, Zero};
+
 use crate::{
     prelude::{SquareMatrix, TentleyError},
-    scalar::{One, Scalar, Zero},
+    scalar_traits::Scalar,
 };
 
 impl<

@@ -3,9 +3,11 @@ use std::{
     ops::{Add, Div, Mul, Neg},
 };
 
+use num_traits::{One, Zero};
+
 use crate::{
     prelude::TentleyError,
-    scalar::{One, Scalar, Zero},
+    scalar_traits::Scalar,
 };
 
 use super::SquareMatrix;

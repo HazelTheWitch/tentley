@@ -3,7 +3,7 @@ use std::{
     mem::{transmute_copy, MaybeUninit},
 };
 
-use crate::scalar::Scalar;
+use crate::scalar_traits::Scalar;
 
 use super::Matrix;
 

@@ -2,7 +2,7 @@ use std::ops::{Add, Mul};
 
 use crate::{
     prelude::{Axis, TentleyError},
-    scalar::Scalar,
+    scalar_traits::Scalar,
 };
 
 use super::Matrix;

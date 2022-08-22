@@ -1,3 +1,5 @@
+//! Matrix, AugmentedMatrix, and SquareMatrix
+
 mod access;
 mod augmented;
 mod basic;
@@ -9,7 +11,7 @@ mod ops;
 mod random;
 mod square;
 
-use crate::scalar::Scalar;
+use crate::scalar_traits::Scalar;
 
 /// Any square matrix of size NxN.
 pub type SquareMatrix<T, const N: usize> = Matrix<T, N, N>;

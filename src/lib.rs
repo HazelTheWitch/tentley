@@ -5,17 +5,14 @@
 //! More of a learning opportunity than a real project, probably don't
 //! use it in any real projects but if you do let me know!
 
-/// Errors for Tentley
-pub mod error;
-/// Linear algebra module.
-pub mod linalg;
-/// Matrix, AugmentedMatrix, and SquareMatrix
-pub mod matrix;
-/// Traits relating to the elements of Matrices
-pub mod scalar;
 
-/// Everything you need to get started with Tentley.
+pub mod error;
+pub mod linalg;
+pub mod matrix;
+pub mod scalar_traits;
+
 pub mod prelude {
+    //! Everything you need to get started with Tentley.
     pub use super::error::*;
     pub use super::matrix::{AugmentedMatrix, Matrix, SquareMatrix};
 
