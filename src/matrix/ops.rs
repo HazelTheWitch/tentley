@@ -8,10 +8,10 @@ use crate::scalar_traits::Scalar;
 
 use super::Matrix;
 
-impl<T: Scalar + Mul<Output = T> + Sum, const R: usize, const N: usize, const C: usize>
+impl<T: Scalar + Mul<Output = O> + Sum<O>, O: Scalar, const R: usize, const N: usize, const C: usize>
     Mul<Matrix<T, N, C>> for Matrix<T, R, N>
 {
-    type Output = Matrix<T, R, C>;
+    type Output = Matrix<O, R, C>;
 
     fn mul(self, rhs: Matrix<T, N, C>) -> Self::Output {
         let mut data: [[MaybeUninit<T>; C]; R] = unsafe { MaybeUninit::uninit().assume_init() };
@@ -30,11 +30,11 @@ impl<T: Scalar + Mul<Output = T> + Sum, const R: usize, const N: usize, const C:
     }
 }
 
-impl<T: Scalar + Add<Output = T>, const R: usize, const C: usize> Add for Matrix<T, R, C> {
-    type Output = Matrix<T, R, C>;
+impl<T: Scalar + Add<Output = O>, O: Scalar, const R: usize, const C: usize> Add for Matrix<T, R, C> {
+    type Output = Matrix<O, R, C>;
 
     fn add(self, rhs: Self) -> Self::Output {
-        let mut data: [[MaybeUninit<T>; R]; C] = unsafe { MaybeUninit::uninit().assume_init() };
+        let mut data: [[MaybeUninit<O>; R]; C] = unsafe { MaybeUninit::uninit().assume_init() };
 
         for row in 0..R {
             for (col, (a, b)) in
